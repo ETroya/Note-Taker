@@ -15,5 +15,5 @@ SO THAT I can organize my thoughts and keep track of tasks I need to complete
 * Node.js
 
 ## ScreenShots
-<img src="/notepad.PNG>"
-<img src="/frontcover.PNG>"
+<img src="notepad.PNG">
+<img src="frontcover.PNG">
