@@ -1,10 +1,8 @@
 const express = require("express");
 const fs =require("fs");
-
 const app= express();
 
-
-app.get("/api/notes", (req,res) => {
+app.get("/notes", (req,res) => {
 fs.readFile("db/db.json", "utf8", (err,data)=>{
     if(err)throw err 
     var newNote =JSON.parse(data)
@@ -12,36 +10,39 @@ fs.readFile("db/db.json", "utf8", (err,data)=>{
 })
 })
 
-app.post("/api/notes",(req,res)=>{
+app.post("/notes",(req,res)=>{
     var newNote= req.body
     console.log(newNote)
-    fs.readFile("/db/db.json", "utf8", (err,data)=>{
+    fs.readFile("db/db.json", "utf8", (err,data)=>{
         if (err) throw err
         var noteForm=JSON.parse(data)
         noteForm.push(newNote)
         noteForm.forEach((item, i)=> item.id= i +1)
         console.log(noteForm)
+
+        fs.writeFile("db/db.json", JSON.stringify(noteForm), "utf8", (err)=>{
+            if (err) throw err
     })
+    })
+    res.json(newNote)
 } )
 
-app.delete("api/notes/:id", (req,res)=>{
+app.delete("/notes/:id", (req,res)=>{
     var emptyNote=req.params.id
-
     console.log(emptyNote)
 
-    fs.readFile("/db/db.json", "utf8", (err,data)=>{
-        console.log("delete")
+    fs.readFile("db/db.json", "utf8", (err,data)=>{
+        
         if(err)throw err
         var noteDelete= JSON.parse(data)
-        var index =parse(emptyNote)-1
+        var index = parseInt(emptyNote)-1
         noteDelete.splice(index, 1);
 
-        fs.readFile("/db/db.json", "utf8", (err,data)=>{
+        fs.writeFile("db/db.json", JSON.stringify(noteDelete), "utf8", (err,data)=>{
             if (err) throw err
-            console.log("deleted")
     })
 })
-    res.json(newNote)
+    res.json(emptyNote)
 })
 
 module.exports= app;
